@@ -1,0 +1,12 @@
+@media screen and (min-width: 769px) {
+	.hello h1 {
+	-webkit-letter-kern: -letter-pairs('he': -1px, 'll': -5px, 'lo': -1px);
+	}
+	.work h1 {
+		-webkit-letter-kern: -letter-pairs('wo':5px, 'or':2px, 'rk':10px, 'k.': 15px);
+	}
+	.about h1 {
+		-webkit-letter-kern: -letter-pairs('ab': -5px, 'bo': 15px, 'ou': 2px, 'ut': -1px, 't.': 15px);
+	}
+}
+.about h1 {letter-spacing: -1.3px;}

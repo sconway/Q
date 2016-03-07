@@ -1,0 +1,194 @@
+@mixin transform($transition) {
+  -webkit-transform: $transition;
+     -moz-transform: $transition;
+      -ms-transform: $transition;
+          transform: $transition;
+}
+
+@mixin transition($args) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+@mixin transition-delay($args) {
+  -webkit-transition-delay: $args;
+  -moz-transition-delay: $args;
+  -ms-transition-delay: $args;
+  -o-transition-delay: $args;
+  transition-delay: $args;
+}
+
+@mixin perspective($args) {
+  -webkit-perspective: $args;
+  -moz-perspective: $args;
+  -ms-perspective: $args;
+  -o-perspective: $args;
+  perspective: $args;
+}
+
+@mixin perspective-origin($args) {
+  -webkit-perspective-origin: $args;
+  -moz-perspective-origin: $args;
+  -ms-perspective-origin: $args;
+  -o-perspective-origin: $args;
+  perspective-origin: $args;
+}
+
+@mixin transform-style($args) {
+  -webkit-transform-style: $args;
+  -moz-transform-style: $args;
+  -ms-transform-style: $args;
+  -o-transform-style: $args;
+  transform-style: $args;
+}
+
+@mixin transform-origin($args) {
+  -webkit-transform-origin: $args;
+  -moz-transform-origin: $args;
+  -ms-transform-origin: $args;
+  -o-transform-origin: $args;
+  transform-origin: $args;
+} 
+
+.clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.bg {
+  height: 500%;
+}
+
+.body-container {
+  overflow-x: hidden;
+  &.active {
+    .section {
+      &.hello,
+      &.about {
+        height: 0;
+        padding: 0;
+      }
+      // &.work {
+      //   .section-title {
+      //     height: 0;
+      //     margin: 0;
+      //     padding: 0;
+      //   }
+      // }
+    }
+  }
+}
+
+
+.section {
+  display: block;
+  overflow: initial;
+  padding: 0;
+  position: relative;
+  min-height: initial;
+  height: 100vh;
+  width: 100%;
+  @include transition( all 1s ease );
+  &.hello {
+    overflow: hidden;
+    top: 0;
+  }
+  &.work {
+    padding: 0;
+    h2 {
+      border: none;
+    }
+    .section-title {
+      transition: none;
+    }
+    .piece1 {
+      margin-top: 0;
+    }
+    .project {
+      // float: left;
+      // overflow-x: hidden;
+      position: relative;
+      // left: 2.5%;
+      // top: 250px;
+      width: 100vw;
+      z-index: 1;
+      @include transition( all 1s ease );
+      &.current {
+        z-index: 2;
+      }
+      &.transform {
+        @include transform(translateZ(-100px));
+        // @include transform( scale(0.8) );
+      }
+    } 
+  }
+  &.about {
+    overflow: hidden;
+    @include transition(none);
+  }
+}
+
+.section-title {
+  padding: 2.5%;
+}
+
+.work-title {
+  padding-left: 2.5% 2.5% 0 2.5%;
+  margin-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+.project-wrapper {
+  left: 0px;
+  width: 500%;
+  @include transition( transform 1.5s cubic-bezier(0.65, 0.13, 0.35, 1.02) );
+}
+
+.project-container {
+  float: left;
+  @include perspective(1000px);
+}
+
+.details {
+  float: none;
+  padding-left: 2.5%;
+  // position: absolute;
+  // top: 250px;
+  width: 80%;
+  @include transition( all 1s ease );
+}
+
+.piece:not(.piece1) {
+  display: none;
+}
+
+.project-title {
+  max-height: 300px;
+  overflow: hidden;
+  @include transition( all 1s ease );
+}
+
+.project-details {
+  // display: none !important;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  @include transition( all 1s ease );
+  // @include transform( scale(0) );
+  video {
+    width: 100%;
+  }
+  img {
+    width: 100%;
+  }
+  &.active {
+    @include transform( scale(1) );
+  }
+}
