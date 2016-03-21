@@ -6,11 +6,39 @@
 .bg {
   height: 500%; }
 
+.header * {
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease; }
+.header.active {
+  height: 100px;
+  width: 100%; }
+  .header.active .nav {
+    float: none;
+    top: initial;
+    transform: none;
+    left: initial;
+    display: flex;
+    justify-content: center; }
+    .header.active .nav li {
+      margin: 2em !important; }
+
 .body-container {
   overflow-x: hidden; }
   .body-container.active .section.hello, .body-container.active .section.about {
     height: 0;
     padding: 0; }
+  .body-container.active .section.hello {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease; }
+  .body-container.active .section .details {
+    padding: 0;
+    width: 100%; }
 
 .section {
   display: block;
@@ -20,11 +48,11 @@
   min-height: initial;
   height: 100vh;
   width: 100%;
-  -webkit-transition: all 1s ease;
-  -moz-transition: all 1s ease;
-  -ms-transition: all 1s ease;
-  -o-transition: all 1s ease;
-  transition: all 1s ease; }
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  -o-transition: all 2s ease;
+  transition: all 2s ease; }
   .section.hello {
     overflow: hidden;
     top: 0; }

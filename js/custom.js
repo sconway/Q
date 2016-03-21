@@ -17,17 +17,8 @@
 		console.log("current index: ", currentIndex);
 		console.log("current transform value: ", curTransform);
 
-        if ($(".body-container").hasClass("active")){
-            // $(".section").removeClass("active");
+        if ( $(".body-container").hasClass("active") ) {
             $(".project").addClass("transform");
-            // $(".project.current")
-            //     // .find(".piece:not(.piece1)")
-            //     .slideToggle(1000, function() {
-            //         $(".section.work").css("height", 
-            //             $(this).parents(".details").outerHeight() +
-            //             $(".section-title").outerHeight() +
-            //             $(".work-title").outerHeight() + "px");
-            //     });
             setTimeout(function() { slideProjects(dir, newTransform, numProjects, currentIndex, true); }, 800);
             setTimeout(function() { $(".project").removeClass("transform"); }, 2000); 
         } else {
@@ -59,24 +50,6 @@
 
             $(".project-wrapper")[0].style["transform"] = newTransform;
             // $(".project-wrapper")[1].style["transform"] = newTransform;
-        }
-
-        if (active) {
-            // setTimeout( function() {
-            //     $(".section").addClass("active");
-            //     // $(".project.current")
-            //     //     .find(".piece:not(.piece1)")
-            //     //     .slideToggle(1000, function() {
-            //     //         $(".section.work").css("height", 
-            //     //             $(this).parents(".details").outerHeight() +
-            //     //             $(".section-title").outerHeight() +
-            //     //             $(".work-title").outerHeight() + "px");
-            //     //     });
-            //     }, 1500);
-        }else {
-            // $(".section.work").css("height", $(".project.current .details").outerHeight() + 
-            //                                  $(".section-title").outerHeight() +
-            //                                  $(".work-title").outerHeight() + "px");
         }
 
         console.log("new transform value: ", newTransform);
@@ -116,19 +89,45 @@
     window.addEventListener('resize', checkScroll, false);
     
 
+    /**
+     * This function slides the project wrapper to the slide corresponding to
+     * the clicked nav item.
+     */
+    function handleNavClick() {
+    	$(".header .nav li:not(:first)").click(function(event) {
+    		event.preventDefault();
+
+    		var newTransform = "translateX(-" +(($(this).index() - 1) * 100)+ "vw)";
+    		
+    		$(".project-container.current").removeClass("current");
+
+    		if ( $(".body-container").hasClass("active") ) {
+            	$(".project").addClass("transform");
+            	setTimeout(function() { 
+            		$(".project-wrapper")[0].style["transform"] = newTransform;
+            	}, 800);
+            	setTimeout(function() { 
+            		$(".project").removeClass("transform"); 
+            		$($(".project-container").get($(this).index() - 1)).addClass("current");
+            	}, 2000); 
+            } else {
+            	$(".project-wrapper")[0].style["transform"] = newTransform;
+            	$($(".project-container").get($(this).index() - 1)).addClass("current");
+            }
+
+            console.log(newTransform);
+    	})
+    }
+
 
     /**
      * 
      */
 	function initSlides() {
 		$(".project-container").first().addClass("current");
-		// $(".section.work").css("height", $(".project.current .details").outerHeight() + 
-  //                                        $(".section-title").outerHeight() +
-  //                                        $(".work-title").outerHeight() + "px");
+		$(".project-wrapper").css("height", $(".project-container.current").height() + "px");
 		
 		$(".piece1").click(function(event) {
-			console.log("Mouse Y: ", event.clientY);
-
 			// $("#hello").slideToggle(1000);
 			$(".project > h2").slideToggle(1000);
 			$(".project > .intro").slideToggle(1000);
@@ -139,26 +138,11 @@
 				console.log("scrolling to: ", $(".piece1").offset().top);
 				$("html, body").animate({ scrollTop: scrollTo }, 1000);
 			} else {
-				// mouseY = event.clientY;
 				$("html, body").animate({ scrollTop: 0 }, 1000);
 			}
 
-			$(".body-container").toggleClass("active");
-
-			// $(this)
-			// 	.parents(".details")
-			// 	.find(".piece:not(.piece1)")
-			// 	.slideToggle(1000, function() {
-   //                  $(".section.work").css("height", 
-   //                      $(this).parents(".details").outerHeight() +
-   //                      $(".section-title").outerHeight() +
-   //                      $(".work-title").outerHeight() + "px");
-   //              });
+			$(".body-container, .header").toggleClass("active");
 		});
-
-        // $(window).scroll(function() {
-        //     checkScroll();
-        // });
 	}
 
 
@@ -221,6 +205,7 @@
 	$(window).load(function() {
 		// needs to be called after load to compute height properly.
 		initSlides();
+		handleNavClick();
 		handleSlideTransitions();
 		
 	});
