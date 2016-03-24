@@ -66,25 +66,23 @@
 }
 
 .header {
+  border-left: none;
   * {
     @include transition( all 1s ease );
   }
-  &.active {
-    height: 100px;
-    width: 100%;
-    .nav {
-      float: none;
-      top: initial;
-      transform: none;
-      left: initial;
-      display: flex;
-      justify-content: center;
-      li {
-        margin: 2em !important;
-      }    
-    }
+  height: 100px;
+  width: 35%;
+  ul.nav {
+    float: none;
+    top: initial;
+    transform: none;
+    left: initial;
+    display: flex;
+    justify-content: center;
+    li {
+      margin: 2em !important;
+    }    
   }
-  
 }
 
 
@@ -103,6 +101,9 @@
       .details {
         padding: 0;
         width: 100%;
+      }
+      .project-wrapper {
+        overflow: initial;
       }
       // &.work {
       //   .section-title {
@@ -176,6 +177,7 @@
 
 .project-wrapper {
   left: 0px;
+  overflow:hidden;
   width: 500%;
   @include transition( transform 1.5s cubic-bezier(0.65, 0.13, 0.35, 1.02) );
 }
@@ -183,6 +185,11 @@
 .project-container {
   float: left;
   @include perspective(1000px);
+}
+
+.intro {
+  position: absolute;
+  left: -999em;
 }
 
 .details {

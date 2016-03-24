@@ -100,6 +100,8 @@
     		var newTransform = "translateX(-" +(($(this).index() - 1) * 100)+ "vw)";
     		
     		$(".project-container.current").removeClass("current");
+    		$(".header .nav li a").removeClass("active");
+    		$(this).find("a").addClass("active");
 
     		if ( $(".body-container").hasClass("active") ) {
             	$(".project").addClass("transform");
@@ -125,7 +127,9 @@
      */
 	function initSlides() {
 		$(".project-container").first().addClass("current");
-		$(".project-wrapper").css("height", $(".project-container.current").height() + "px");
+		$(".section.work").css("height", $(".section.work").height() + 
+							   $(".project-container.current").height() - 200 + "px");
+		$(".project-wrapper").css("height",  $(".project-container.current").height() + "px");
 		
 		$(".piece1").click(function(event) {
 			// $("#hello").slideToggle(1000);
