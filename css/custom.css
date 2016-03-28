@@ -40,8 +40,15 @@
   .body-container.active .section .details {
     padding: 0;
     width: 100%; }
-  .body-container.active .section .project-wrapper {
+  .body-container.active .section.work .project-wrapper {
     overflow: initial; }
+    .body-container.active .section.work .project-wrapper .project-container:not(.current) {
+      -webkit-transform: translateX(0vw);
+      -moz-transform: translateX(0vw);
+      -ms-transform: translateX(0vw);
+      transform: translateX(0vw); }
+    .body-container.active .section.work .project-wrapper .project {
+      width: 100vw; }
 
 .section {
   display: block;
@@ -111,11 +118,22 @@
 
 .project-container {
   float: left;
+  position: relative;
   -webkit-perspective: 1000px;
   -moz-perspective: 1000px;
   -ms-perspective: 1000px;
   -o-perspective: 1000px;
-  perspective: 1000px; }
+  perspective: 1000px;
+  -webkit-transition: transform 1s ease;
+  -moz-transition: transform 1s ease;
+  -ms-transition: transform 1s ease;
+  -o-transition: transform 1s ease;
+  transition: transform 1s ease; }
+  .project-container:not(.current) {
+    -webkit-transform: translateX(-10vw);
+    -moz-transform: translateX(-10vw);
+    -ms-transform: translateX(-10vw);
+    transform: translateX(-10vw); }
 
 .intro {
   position: absolute;
@@ -132,7 +150,10 @@
   transition: all 1s ease; }
 
 .piece:not(.piece1) {
-  display: none; }
+  display: none;
+  width: 80%;
+  margin-left: auto !important;
+  margin-right: auto !important; }
 
 .project-title {
   max-height: 300px;

@@ -102,9 +102,18 @@
         padding: 0;
         width: 100%;
       }
-      .project-wrapper {
-        overflow: initial;
+      &.work {
+        .project-wrapper {
+          overflow: initial;
+          .project-container:not(.current) {
+            @include transform( translateX(0vw) );
+          }
+          .project {
+            width: 100vw;
+          }
+        }
       }
+     
       // &.work {
       //   .section-title {
       //     height: 0;
@@ -157,7 +166,7 @@
         @include transform(translateZ(-100px));
         // @include transform( scale(0.8) );
       }
-    } 
+    }
   }
   &.about {
     overflow: hidden;
@@ -184,7 +193,12 @@
 
 .project-container {
   float: left;
+  position: relative;
   @include perspective(1000px);
+  @include transition( transform 1s ease );
+  &:not(.current) {
+    @include transform( translateX(-10vw) );
+  } 
 }
 
 .intro {
@@ -203,6 +217,9 @@
 
 .piece:not(.piece1) {
   display: none;
+  width: 80%;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .project-title {

@@ -2,6 +2,31 @@
 	var mouseY,
 		scrollTo = $(".work .project").offset().top;
 
+
+	$.fn.isOnScreen = function(){
+	    var viewport = {};
+	    viewport.top = $(window).scrollTop();
+	    viewport.bottom = viewport.top + $(window).height();
+	    var bounds = {};
+	    bounds.top = this.offset().top;
+	    bounds.bottom = bounds.top + this.outerHeight();
+	    return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));
+	};
+
+
+	/**
+	 * This function is responsible for scrolling the page to the supplied
+	 * center point. It creates an interval and calls the scrollBy method
+	 * within that interval to slide up or down the page.
+	 *
+	 *  @param scrollPoint : Integer
+	 *  @param duration    : Integer
+	 */
+	function handleSectionScroll(scrollPoint, duration) {
+	    $('html, body').stop().animate({scrollTop: scrollPoint}, duration, "linear");
+	}
+
+
 	/**
 	 * This function is responsible for sliding the projects to the left
 	 * or the right based on the user's input. It manipulates the transform
@@ -24,7 +49,6 @@
         } else {
             slideProjects(dir, newTransform, numProjects, currentIndex, false);
         }
-        
 	}
 
 
@@ -98,24 +122,31 @@
     		event.preventDefault();
 
     		var newTransform = "translateX(-" +(($(this).index() - 1) * 100)+ "vw)";
-    		
-    		$(".project-container.current").removeClass("current");
-    		$(".header .nav li a").removeClass("active");
-    		$(this).find("a").addClass("active");
 
-    		if ( $(".body-container").hasClass("active") ) {
-            	$(".project").addClass("transform");
-            	setTimeout(function() { 
-            		$(".project-wrapper")[0].style["transform"] = newTransform;
-            	}, 800);
-            	setTimeout(function() { 
-            		$(".project").removeClass("transform"); 
-            		$($(".project-container").get($(this).index() - 1)).addClass("current");
-            	}, 2000); 
+            // Be sure to only slide the projects if they are in the viewport.
+            // If they aren't, scroll the page down so they are in view.
+            if ( $(".project-container.current").isOnScreen() ) {
+                $(".project-container.current").removeClass("current");
+                $(".header .nav li a").removeClass("active");
+                $(this).find("a").addClass("active");
+
+                if ( $(".body-container").hasClass("active") ) {
+                    $(".project").addClass("transform");
+                    setTimeout(function() { 
+                        $(".project-wrapper")[0].style["transform"] = newTransform;
+                    }, 800);
+                    setTimeout(function() { 
+                        $(".project").removeClass("transform"); 
+                        $($(".project-container").get($(this).index() - 1)).addClass("current");
+                    }, 2000); 
+                } else {
+                    $(".project-wrapper")[0].style["transform"] = newTransform;
+                    $($(".project-container").get($(this).index() - 1)).addClass("current");
+                }
             } else {
-            	$(".project-wrapper")[0].style["transform"] = newTransform;
-            	$($(".project-container").get($(this).index() - 1)).addClass("current");
+                handleSectionScroll($(".project-container.current").offset().top, 1000);
             }
+    		
 
             console.log(newTransform);
     	})
