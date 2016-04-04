@@ -72,6 +72,9 @@
   }
   height: 100px;
   width: 35%;
+  @media (max-width: 768px) {
+    height: auto !important;
+  }
   ul.nav {
     float: none;
     top: initial;
@@ -86,17 +89,18 @@
 }
 
 
+
 .body-container {
   overflow-x: hidden;
   &.active {
     .section {
-      &.hello,
-      &.about {
-        height: 0;
-        padding: 0;
-      }
+      // &.hello,
+      // &.about {
+      //   @include transition( all 1s ease );
+      //   height: 0;
+      //   padding: 0;
+      // }
       &.hello{
-        @include transition( all 1s ease );
       }
       .details {
         padding: 0;
@@ -128,21 +132,34 @@
 
 .section {
   display: block;
+  float: none !important;
   overflow: initial;
-  padding: 0;
+  padding: 0 !important;
   position: relative;
   min-height: initial;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   @include transition( all 2s ease );
+  @media (min-width: 768px) {
+    height: 100vh;
+    
+  }
   &.hello {
+    margin-bottom: 60px;
     overflow: hidden;
     top: 0;
+    @include transition(none);
+    .section-title {
+      margin-bottom: 50px !important;
+    }
   }
   &.work {
     padding: 0;
     h2 {
       border: none;
+      @media (max-width: 768px) {
+        font-size: 2.4em;
+      }
     }
     .section-title {
       transition: none;
@@ -156,7 +173,7 @@
       position: relative;
       // left: 2.5%;
       // top: 250px;
-      width: 100vw;
+      width: 100vw !important; 
       z-index: 1;
       @include transition( all 1s ease );
       &.current {
@@ -175,7 +192,8 @@
 }
 
 .section-title {
-  padding: 2.5%;
+  margin-bottom: 0 !important;
+  padding: 0 2.5% 2.5% 2.5% !important;
 }
 
 .work-title {
@@ -208,11 +226,14 @@
 
 .details {
   float: none;
-  padding-left: 2.5%;
   // position: absolute;
   // top: 250px;
   width: 80%;
   @include transition( all 1s ease );
+  @media (min-width: 768px) {
+    padding-left: 2.5%;
+  }
+
 }
 
 .piece:not(.piece1) {

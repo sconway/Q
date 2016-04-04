@@ -2,16 +2,48 @@
 	var mouseY,
 		scrollTo = $(".work .project").offset().top;
 
+    var videos = document.getElementsByTagName("video"),
+        fraction = 0.8;
 
-	$.fn.isOnScreen = function(){
-	    var viewport = {};
-	    viewport.top = $(window).scrollTop();
-	    viewport.bottom = viewport.top + $(window).height();
-	    var bounds = {};
-	    bounds.top = this.offset().top;
-	    bounds.bottom = bounds.top + this.outerHeight();
-	    return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));
-	};
+
+    $.fn.isOnScreen = function(){
+        var viewport = {};
+        viewport.top = $(window).scrollTop();
+        viewport.bottom = viewport.top + $(window).height();
+        var bounds = {};
+        bounds.top = this.offset().top;
+        bounds.bottom = bounds.top + this.outerHeight();
+        return ((bounds.top <= viewport.bottom) && (bounds.bottom >= viewport.top));
+    };
+
+
+    function checkScroll() {
+        // console.log("called");
+        for(var i = 0; i < videos.length; i++) {
+
+            var video = videos[i];
+
+            var x = video.offsetLeft, y = $(video).offset().top, w = video.offsetWidth, h = video.offsetHeight, r = x + w, //right
+                b = y + h, //bottom
+                visibleX, visibleY, visible;
+
+                visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
+                visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
+
+                visible = visibleX * visibleY / (w * h);
+
+                if (visible > fraction) {
+                    // console.log("visible");
+                    video.play();
+                } else {
+                    // console.log("not visible");
+                    video.pause();
+                }
+        }
+    }
+
+    window.addEventListener('scroll', checkScroll, false);
+    window.addEventListener('resize', checkScroll, false);
 
 
 	/**
@@ -52,65 +84,51 @@
 	}
 
 
+
     function slideProjects(dir, newTransform, numProjects, currentIndex, active) {
         if (dir === "right" && currentIndex !== numProjects-1) {
             newTransform = "translateX(-" +(currentIndex * 100 + 100)+ "vw)";
 
-            $(".project-container.current")
-                .removeClass("current")
-                .next(".project-container")
-                .addClass("current");
+            updateAfterSlide(currentIndex, false);
 
             $(".project-wrapper")[0].style["transform"] = newTransform;
-            // $(".project-wrapper")[1].style["transform"] = newTransform;
 
         } else if (dir === "left" && currentIndex !== 0) {
             newTransform = "translateX(-" +(currentIndex * 100 - 100)+ "vw)";
 
-            $(".project-container.current")
-                .removeClass("current")
-                .prev(".project-container")
-                .addClass("current");
+            updateAfterSlide(currentIndex, true);
 
             $(".project-wrapper")[0].style["transform"] = newTransform;
-            // $(".project-wrapper")[1].style["transform"] = newTransform;
         }
 
         console.log("new transform value: ", newTransform);
     }
 
 
+    /**
+     * This function is called after a slide transition completes. It is
+     * responsible for updating the current classes on the various project
+     * containers, along with updating the active status of the nav bar, and
+     * setting the height of the current project container.
+     */
+    function updateAfterSlide(currentIndex, left) {
+        var $current = $(".project-container.current");
 
-    var videos = document.getElementsByTagName("video"),
-        fraction = 0.8;
+        $(".nav-link").removeClass("active");
+        $current.removeClass("current");
 
-    function checkScroll() {
-        // console.log("called");
-        for(var i = 0; i < videos.length; i++) {
-
-            var video = videos[i];
-
-            var x = video.offsetLeft, y = $(video).offset().top, w = video.offsetWidth, h = video.offsetHeight, r = x + w, //right
-                b = y + h, //bottom
-                visibleX, visibleY, visible;
-
-                visibleX = Math.max(0, Math.min(w, window.pageXOffset + window.innerWidth - x, r - window.pageXOffset));
-                visibleY = Math.max(0, Math.min(h, window.pageYOffset + window.innerHeight - y, b - window.pageYOffset));
-
-                visible = visibleX * visibleY / (w * h);
-
-                if (visible > fraction) {
-                    // console.log("visible");
-                    video.play();
-                } else {
-                    // console.log("not visible");
-                    video.pause();
-                }
+        if ( left ) { 
+            $current.prev(".project-container").addClass("current");
+            $($(".nav-link").get(currentIndex - 1)).addClass("active");
+        } else {
+            $current.next(".project-container").addClass("current");
+            $($(".nav-link").get(currentIndex + 1)).addClass("active");
         }
+
+        $(".project-wrapper").css("height",  
+            $(".project-container.current").height() + "px");
     }
 
-    window.addEventListener('scroll', checkScroll, false);
-    window.addEventListener('resize', checkScroll, false);
     
 
     /**
@@ -158,25 +176,29 @@
      */
 	function initSlides() {
 		$(".project-container").first().addClass("current");
-		$(".section.work").css("height", $(".section.work").height() + 
-							   $(".project-container.current").height() - 200 + "px");
+		// $(".section.work").css("height", $(".project-container.current").height() + "px");
 		$(".project-wrapper").css("height",  $(".project-container.current").height() + "px");
 		
 		$(".piece1").click(function(event) {
+            if ($(".body-container").hasClass("active")) {
+                console.log("scrolling to: ", $(".piece1").offset().top);
+                $("html, body").animate({ scrollTop: scrollTo }, 1000);
+                $(".body-container, .header").removeClass("active");
+            } else {
+                $(".body-container, .header").addClass("active");
+                $("html, body").animate({ scrollTop: 0 }, 1000);
+            }
+            
 			// $("#hello").slideToggle(1000);
 			$(".project > h2").slideToggle(1000);
 			$(".project > .intro").slideToggle(1000);
+            $(".section.hello, .section.about").slideToggle(1000);
 			$("#work").slideToggle(1000);
 			$(".piece:not(.piece1)").slideToggle(500);
 
-			if ($(".body-container").hasClass("active")) {
-				console.log("scrolling to: ", $(".piece1").offset().top);
-				$("html, body").animate({ scrollTop: scrollTo }, 1000);
-			} else {
-				$("html, body").animate({ scrollTop: 0 }, 1000);
-			}
+			
 
-			$(".body-container, .header").toggleClass("active");
+			
 		});
 	}
 
