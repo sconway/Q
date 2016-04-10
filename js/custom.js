@@ -136,17 +136,18 @@
      * the clicked nav item.
      */
     function handleNavClick() {
-    	$(".header .nav li:not(:first)").click(function(event) {
+    	$(".header .nav li:not(:first, :last)").click(function(event) {
     		event.preventDefault();
 
-    		var newTransform = "translateX(-" +(($(this).index() - 1) * 100)+ "vw)";
+    		var newTransform = "translateX(-" +(($(this).index() - 1) * 100)+ "vw)",
+                $this        = $(this);
 
             // Be sure to only slide the projects if they are in the viewport.
             // If they aren't, scroll the page down so they are in view.
             if ( $(".project-container.current").isOnScreen() ) {
                 $(".project-container.current").removeClass("current");
                 $(".header .nav li a").removeClass("active");
-                $(this).find("a").addClass("active");
+                $this.find("a").addClass("active");
 
                 if ( $(".body-container").hasClass("active") ) {
                     $(".project").addClass("transform");
@@ -155,18 +156,30 @@
                     }, 800);
                     setTimeout(function() { 
                         $(".project").removeClass("transform"); 
-                        $($(".project-container").get($(this).index() - 1)).addClass("current");
+                        $($(".project-container").get($this.index() - 1)).addClass("current");
+                        $(".project-wrapper").css("height",  
+                            $(".project-container.current").height() + "px");
                     }, 2000); 
                 } else {
                     $(".project-wrapper")[0].style["transform"] = newTransform;
-                    $($(".project-container").get($(this).index() - 1)).addClass("current");
+                    $($(".project-container").get($this.index() - 1)).addClass("current");
+                    $(".project-wrapper").css("height",  
+                        $(".project-container.current").height() + "px");
                 }
             } else {
                 handleSectionScroll($(".project-container.current").offset().top, 1000);
             }
     		
-
             console.log(newTransform);
+
+            // slides the page down to the about section when the bio link
+            // in the nav is clicked. Only does this when the project is not active.
+            $("#bioLink").click(function() {
+                if ( !$(".body-container").hasClass("active") ) {
+                    handleSectionScroll($("#about").offset().top - 50, 1250);
+                }
+            })
+
     	})
     }
 
