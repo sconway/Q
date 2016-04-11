@@ -205,12 +205,12 @@
 			// $("#hello").slideToggle(1000);
 			$(".project > h2").slideToggle(1000);
 			$(".project > .intro").slideToggle(1000);
-            $(".section.hello, .section.about").slideToggle(1000);
+            $(".section.hello, .section.about").slideToggle(1000, function() {
+                $(".project-wrapper").css("height",  
+                    $(".project-container.current").height() + "px");
+            });
 			$("#work").slideToggle(1000);
 			$(".piece:not(.piece1)").slideToggle(500);
-
-			
-
 			
 		});
 	}
