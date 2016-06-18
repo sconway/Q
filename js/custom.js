@@ -40,6 +40,14 @@
                     video.pause();
                 }
         }
+
+        // Checks if a project is visible and sets the corresponding menu item active
+        if ($(".project-container.current").isOnScreen()) {
+            var index = $(".project-container.current").index();
+            $($(".nav-link").get(index)).addClass("active");
+        } else {
+            $(".nav-link").removeClass("active");
+        }
     }
 
     window.addEventListener('scroll', checkScroll, false);
@@ -172,15 +180,24 @@
     		
             console.log(newTransform);
 
-            // slides the page down to the about section when the bio link
-            // in the nav is clicked. Only does this when the project is not active.
-            $("#bioLink").click(function() {
-                if ( !$(".body-container").hasClass("active") ) {
-                    handleSectionScroll($("#about").offset().top - 50, 1250);
-                }
-            })
+    	});
 
-    	})
+        // slides the page down to the about section when the bio link
+        // in the nav is clicked. Only does this when the project is not active.
+        $("#bioLink").click(function() {
+            if ( !$(".body-container").hasClass("active") ) {
+                console.log("clicked");
+                handleSectionScroll($("#about").offset().top - 50, 1250);
+            }
+        });
+
+
+        $("#homeLink").click(function() {
+            if ( !$(".body-container").hasClass("active") ) {
+                console.log("clicked");
+                handleSectionScroll(0, 1250);
+            }
+        });
     }
 
 
@@ -189,6 +206,11 @@
      */
 	function initSlides() {
 		$(".project-container").first().addClass("current");
+        
+        setTimeout(function() {
+            $(".bg").height($(".body-container").height());
+        }, 1000);
+
 		// $(".section.work").css("height", $(".project-container.current").height() + "px");
 		$(".project-wrapper").css("height",  $(".project-container.current").height() + "px");
 		
