@@ -110,6 +110,8 @@ body .bg {
           margin-bottom: 35px !important; } }
     .section.work .piece1 {
       margin-top: 0; }
+      .section.work .piece1:hover {
+        cursor: pointer; }
     .section.work .project {
       position: relative;
       width: 100vw !important;

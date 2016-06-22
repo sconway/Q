@@ -189,6 +189,9 @@ body {
     }
     .piece1 {
       margin-top: 0;
+      &:hover {
+        cursor: pointer;
+      }
     }
     .project {
       position: relative;

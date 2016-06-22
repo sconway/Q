@@ -60,10 +60,15 @@
 	 * within that interval to slide up or down the page.
 	 *
 	 *  @param scrollPoint : Integer
-	 *  @param duration    : Integer
+     *  @param duration    : Integer
+	 *  @param fn          : Anonymous
 	 */
-	function handleSectionScroll(scrollPoint, duration) {
-	    $('html, body').stop().animate({scrollTop: scrollPoint}, duration, "linear");
+	function handleSectionScroll(scrollPoint, duration, fn) {
+	    $('html, body').stop().animate(
+            { scrollTop: scrollPoint }, 
+            duration, 
+            "linear", 
+            fn );
 	}
 
 
@@ -175,7 +180,14 @@
                         $(".project-container.current").height() + "px");
                 }
             } else {
-                handleSectionScroll($(".project-container.current").offset().top, 1000);
+                handleSectionScroll(
+                    $(".project-container.current").offset().top, 
+                    1000, function() {
+                        $(".project-wrapper")[0].style["transform"] = newTransform;
+                        $($(".project-container").get($this.index() - 1)).addClass("current");
+                        $(".project-wrapper").css("height",  
+                            $(".project-container.current").height() + "px");
+                    });
             }
     		
             console.log(newTransform);
@@ -214,27 +226,46 @@
 		// $(".section.work").css("height", $(".project-container.current").height() + "px");
 		$(".project-wrapper").css("height",  $(".project-container.current").height() + "px");
 		
-		$(".piece1").click(function(event) {
-            if ($(".body-container").hasClass("active")) {
-                console.log("scrolling to: ", $(".piece1").offset().top);
-                $("html, body").animate({ scrollTop: scrollTo }, 1000);
-                $(".body-container, .header").removeClass("active");
+		$(".project-container").click(function(event) {
+
+            if ( $(this).hasClass("current") ) {
+                if ($(".body-container").hasClass("active")) {
+                    console.log("scrolling to: ", $(".piece1").offset().top);
+                    $("html, body").animate({ scrollTop: scrollTo }, 1000);
+                    $(".body-container, .header").removeClass("active");
+                } else {
+                    $(".body-container, .header").addClass("active");
+                    $("html, body").animate({ scrollTop: 0 }, 1000);
+                }
+                
+                // $("#hello").slideToggle(1000);
+                $(".project > h2").slideToggle(1000);
+                $(".project > .intro").slideToggle(1000);
+                $(".section.hello, .section.about").slideToggle(1000, function() {
+                    $(".project-wrapper").css("height",  
+                        $(".project-container.current").height() + "px");
+                });
+                $("#work").slideToggle(1000);
+                $(".piece:not(.piece1)").slideToggle(500);
             } else {
-                $(".body-container, .header").addClass("active");
-                $("html, body").animate({ scrollTop: 0 }, 1000);
+                if ( !$(".body-container").hasClass("active") ) {
+                    console.log("clicked");
+                    var $this        = $(this),
+                        newTransform = "translateX(-" + ($this.index() * 100) + "vw)";
+
+                    $(".project-wrapper")[0].style["transform"] = newTransform;
+                    $(".project-container").removeClass("current");
+                    $($(".project-container").get($this.index())).addClass("current");
+                    $(".project-wrapper").css("height",  
+                        $(".project-container.current").height() + "px");
+
+                    $(".nav-link").removeClass("active");
+                    $($(".nav-link").get($this.index())).addClass("active");
+                }   
             }
-            
-			// $("#hello").slideToggle(1000);
-			$(".project > h2").slideToggle(1000);
-			$(".project > .intro").slideToggle(1000);
-            $(".section.hello, .section.about").slideToggle(1000, function() {
-                $(".project-wrapper").css("height",  
-                    $(".project-container.current").height() + "px");
-            });
-			$("#work").slideToggle(1000);
-			$(".piece:not(.piece1)").slideToggle(500);
-			
+
 		});
+
 	}
 
 
