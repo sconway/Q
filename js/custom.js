@@ -17,8 +17,14 @@
     };
 
 
+    /**
+     * Called on every scroll event. This function handles any scroll
+     * related behavior, such as playing videos when they are on screen,
+     * or displaying/toggling certain elements/classes.
+     */
     function checkScroll() {
-        // console.log("called");
+        
+        // Check all videos to see if they are in the viewport.
         for(var i = 0; i < videos.length; i++) {
 
             var video = videos[i];
@@ -33,22 +39,32 @@
                 visible = visibleX * visibleY / (w * h);
 
                 if (visible > fraction) {
-                    // console.log("visible");
                     video.play();
                 } else {
-                    // console.log("not visible");
                     video.pause();
                 }
         }
 
         // Checks if a project is visible and sets the corresponding menu item active
-        if ($(".project-container.current").isOnScreen()) {
+        if ( $(".project-container.current").isOnScreen() ) {
             var index = $(".project-container.current").index();
             $($(".nav-link").get(index)).addClass("active");
         } else {
             $(".nav-link").removeClass("active");
         }
+
+
+        // if the space betweet the project cover photo and the about section
+        // is in the middle of the viewport, show the nav keys.
+        if ( (window.pageYOffset + 20) > $(".project-container .details").offset().top &&
+             (window.pageYOffset + window.innerHeight) < $("#about").offset().top ) {
+            console.log("visible");
+            $("#navKeys").addClass("active");
+        } else {
+            $("#navKeys").removeClass("active");
+        }
     }
+
 
     window.addEventListener('scroll', checkScroll, false);
     window.addEventListener('resize', checkScroll, false);
@@ -61,7 +77,7 @@
 	 *
 	 *  @param scrollPoint : Integer
      *  @param duration    : Integer
-	 *  @param fn          : Anonymous
+	 *  @param fn          : Anonymous function
 	 */
 	function handleSectionScroll(scrollPoint, duration, fn) {
 	    $('html, body').stop().animate(
@@ -97,7 +113,10 @@
 	}
 
 
-
+    /**
+     * This function slides the project container left or right based on the
+     * provided direction.
+     */
     function slideProjects(dir, newTransform, numProjects, currentIndex, active) {
         if (dir === "right" && currentIndex !== numProjects-1) {
             newTransform = "translateX(-" +(currentIndex * 100 + 100)+ "vw)";
@@ -166,6 +185,7 @@
                     $(".project").addClass("transform");
                     setTimeout(function() { 
                         $(".project-wrapper")[0].style["transform"] = newTransform;
+                        handleSectionScroll(0, 1000, null);
                     }, 800);
                     setTimeout(function() { 
                         $(".project").removeClass("transform"); 
@@ -180,13 +200,16 @@
                         $(".project-container.current").height() + "px");
                 }
             } else {
+                $(".project-container.current").removeClass("current");
                 handleSectionScroll(
-                    $(".project-container.current").offset().top, 
+                    $(".project-container").offset().top, 
                     1000, function() {
                         $(".project-wrapper")[0].style["transform"] = newTransform;
                         $($(".project-container").get($this.index() - 1)).addClass("current");
                         $(".project-wrapper").css("height",  
                             $(".project-container.current").height() + "px");
+                        // remove the current nav link and set the clicked one to be current.
+                        $($(".nav-link").get($this.index() - 1)).addClass("active");
                     });
             }
     		
@@ -214,6 +237,45 @@
 
 
     /**
+     * Handles clicks on the back button for the project details. Exits
+     * out of the active project when clicked.
+     */
+    function handleBackButtonClick() {
+
+        $("#backBtn").click( function() {
+            $(this).removeClass("active");
+
+            closeProject();
+            toggleActiveHeights();
+        });
+
+    }
+
+
+    /**
+     * Exits out of the current project and removes the necessary classes.
+     */
+    function closeProject() {
+        console.log("scrolling to: ", $(".piece1").offset().top);
+        $("html, body").animate({ scrollTop: scrollTo }, 1000);
+        $(".body-container, .header").removeClass("active");
+    }
+
+
+    function toggleActiveHeights() {
+        // $("#hello").slideToggle(1000);
+        $(".project > h2").slideToggle(1000);
+        $(".project > .intro").slideToggle(1000);
+        $(".section.hello, .section.about").slideToggle(1000, function() {
+            $(".project-wrapper").css("height",  
+                $(".project-container.current").height() + "px");
+        });
+        $("#work").slideToggle(1000);
+        $(".piece:not(.piece1)").slideToggle(500);
+    }
+
+
+    /**
      * 
      */
 	function initSlides() {
@@ -223,30 +285,25 @@
             $(".bg").height($(".body-container").height());
         }, 1000);
 
-		// $(".section.work").css("height", $(".project-container.current").height() + "px");
+        // Set the project wrapper to be the height of the current project container
 		$(".project-wrapper").css("height",  $(".project-container.current").height() + "px");
 		
+        // Determine whether or not the project should be expanded or reduced
 		$(".project-container").click(function(event) {
 
+            // If the current project was clicked, expand it. If not, it must
+            // have been the next project, so slide it.
             if ( $(this).hasClass("current") ) {
+
+                // If the project is expanded, close it. Otherwise expand it.
                 if ($(".body-container").hasClass("active")) {
-                    console.log("scrolling to: ", $(".piece1").offset().top);
-                    $("html, body").animate({ scrollTop: scrollTo }, 1000);
-                    $(".body-container, .header").removeClass("active");
+                    closeProject();
                 } else {
                     $(".body-container, .header").addClass("active");
                     $("html, body").animate({ scrollTop: 0 }, 1000);
                 }
                 
-                // $("#hello").slideToggle(1000);
-                $(".project > h2").slideToggle(1000);
-                $(".project > .intro").slideToggle(1000);
-                $(".section.hello, .section.about").slideToggle(1000, function() {
-                    $(".project-wrapper").css("height",  
-                        $(".project-container.current").height() + "px");
-                });
-                $("#work").slideToggle(1000);
-                $(".piece:not(.piece1)").slideToggle(500);
+                toggleActiveHeights();;
             } else {
                 if ( !$(".body-container").hasClass("active") ) {
                     console.log("clicked");
@@ -329,6 +386,7 @@
 		// needs to be called after load to compute height properly.
 		initSlides();
 		handleNavClick();
+        handleBackButtonClick();
 		handleSlideTransitions();
 		
 	});

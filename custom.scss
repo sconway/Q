@@ -118,6 +118,15 @@ body {
         }
       }
     }
+    .back-btn {
+      @include transition( opacity 1000ms ease 1000ms );
+      z-index: 4;
+      opacity: 1;
+      .close-btn {
+        @include transition( all 1s ease 1.25s );
+        stroke-dashoffset: 0;
+      }
+    }
   }
 }
 
@@ -283,11 +292,13 @@ body {
   margin-right: auto !important;
 }
 
+
 .project-title {
   max-height: 300px;
   overflow: hidden;
   @include transition( all 1s ease );
 }
+
 
 .project-details {
   // display: none !important;
@@ -307,3 +318,66 @@ body {
     @include transform( scale(1) );
   }
 }
+
+
+// back button that appears when a project
+// is in the active state.
+.back-btn {
+  background-color: #35FDFF;
+  color: #fff;
+  font-size: 16px;
+  height: 50px;
+  width: 50px;
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  @include transition( opacity 500ms ease 0 );
+  &:hover {
+    cursor: pointer;
+  }
+  span {
+    background: #092D2D;
+    height: 1px;
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    @include transform-origin( center );
+    @include transform( translate(-50%, -50%) rotate(45deg) );
+    &:nth-child(2) {
+      @include transform( translate(-50%, -50%) rotate(-45deg) );      
+    }
+  }
+}
+
+
+.close-btn {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  @include transform( translate(-50%, -50%) );
+  @include transition( all 1s ease );
+}
+
+
+// the keyboard navigation icon that appars
+// below the current project.
+.nav-keys {
+    opacity: 0;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    width: 100px;
+    @include transform( translateX( -50% ) );
+    @include transition( opacity 500ms ease );
+    &.active {
+      opacity: 1;
+    }
+}
+

@@ -41,6 +41,21 @@ body .bg {
     transform: translateX(0vw); }
   .body-container.active .section.work .project-wrapper .project {
     width: 100vw; }
+  .body-container.active .back-btn {
+    -webkit-transition: opacity 1000ms ease 1000ms;
+    -moz-transition: opacity 1000ms ease 1000ms;
+    -ms-transition: opacity 1000ms ease 1000ms;
+    -o-transition: opacity 1000ms ease 1000ms;
+    transition: opacity 1000ms ease 1000ms;
+    z-index: 4;
+    opacity: 1; }
+    .body-container.active .back-btn .close-btn {
+      -webkit-transition: all 1s ease 1.25s;
+      -moz-transition: all 1s ease 1.25s;
+      -ms-transition: all 1s ease 1.25s;
+      -o-transition: all 1s ease 1.25s;
+      transition: all 1s ease 1.25s;
+      stroke-dashoffset: 0; }
 
 .section {
   display: block;
@@ -236,5 +251,81 @@ body .bg {
     -moz-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1); }
+
+.back-btn {
+  background-color: #35FDFF;
+  color: #fff;
+  font-size: 16px;
+  height: 50px;
+  width: 50px;
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  -webkit-transition: opacity 500ms ease 0;
+  -moz-transition: opacity 500ms ease 0;
+  -ms-transition: opacity 500ms ease 0;
+  -o-transition: opacity 500ms ease 0;
+  transition: opacity 500ms ease 0; }
+  .back-btn:hover {
+    cursor: pointer; }
+  .back-btn span {
+    background: #092D2D;
+    height: 1px;
+    width: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    -webkit-transform-origin: center;
+    -moz-transform-origin: center;
+    -ms-transform-origin: center;
+    -o-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: translate(-50%, -50%) rotate(45deg);
+    -moz-transform: translate(-50%, -50%) rotate(45deg);
+    -ms-transform: translate(-50%, -50%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg); }
+    .back-btn span:nth-child(2) {
+      -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+      -moz-transform: translate(-50%, -50%) rotate(-45deg);
+      -ms-transform: translate(-50%, -50%) rotate(-45deg);
+      transform: translate(-50%, -50%) rotate(-45deg); }
+
+.close-btn {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease; }
+
+.nav-keys {
+  opacity: 0;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  width: 100px;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: opacity 500ms ease;
+  -moz-transition: opacity 500ms ease;
+  -ms-transition: opacity 500ms ease;
+  -o-transition: opacity 500ms ease;
+  transition: opacity 500ms ease; }
+  .nav-keys.active {
+    opacity: 1; }
 
 /*# sourceMappingURL=custom.css.map */
