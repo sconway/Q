@@ -65,7 +65,7 @@ function init( font ) {
 
 	object = new THREE.Line( buffergeometry, shaderMaterial );
 	object.rotation.x = 0.2;
-	object.scale.set(3, 3, 3);
+	object.scale.set(7, 6, 4);
 	scene.add( object );
 
 	renderer = new THREE.WebGLRenderer( { antialias: true } );
