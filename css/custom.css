@@ -80,7 +80,8 @@ body .bg {
   .section .section-title {
     line-height: 1 !important;
     padding: 0 2.5% 2.5% 2.5% !important;
-    top: 0; }
+    top: 0;
+    z-index: 1; }
     @media (min-width: 1024px) {
       .section .section-title {
         margin-bottom: 0; } }
@@ -163,8 +164,6 @@ body .bg {
     -ms-transition: none;
     -o-transition: none;
     transition: none; }
-    .section.about .section-title {
-      z-index: 1; }
 
 .work-title {
   padding-left: 2.5% 2.5% 0 2.5%;

@@ -153,6 +153,7 @@ body {
     line-height: 1 !important;
     padding: 0 2.5% 2.5% 2.5% !important;
     top: 0;
+    z-index: 1;
     @media (min-width: 1024px) {
       margin-bottom: 0;
     }
@@ -235,9 +236,6 @@ body {
     margin-bottom: 175px;
     overflow: hidden;
     @include transition(none);
-    .section-title {
-      z-index: 1;
-    }
   }
 }
 
